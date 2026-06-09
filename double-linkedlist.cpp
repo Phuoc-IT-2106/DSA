@@ -204,7 +204,73 @@ class MyLinkedList{
                 current = nextNODE;
                 }    
         }
-    
+        void RemoveDuplicateSorted(){
+            if(!head) return;
+            NODE* curr = head;
+            while(curr && curr->next){
+                if(curr->data == curr->next->data){
+                    NODE* dup = curr->next;
+                    curr->next = dup->next;
+                    if(dup->next) dup->next->prev = curr;
+                    else tail = curr;
+                    delete dup;
+                    size--;
+                }
+                else curr = curr->next;
+            }
+        }
+        //REVERSE LL
+        void ReverseLinkedList(){
+            NODE* curr = head;
+            NODE* temp = nullptr;
+            while(curr){
+                temp = curr->prev;
+                curr->prev = curr->next;
+                curr->next = temp;
+                curr = curr->prev;
+            }
+            temp = head;
+            head = tail;
+            tail = temp;
+        }
+
+        //CHECK PALINDROME LL
+        bool CheckPalindrome(){
+            if(!head && !head->next) return true;
+            NODE* left = head;
+            NODE* right = tail;
+            while(left != right && left->prev != right){
+                if(left->data != right->data){
+                    return false;
+                }
+                left = left->next;
+                right = right->prev;
+            }
+            return true;
+        }
+
+        //PAIRS TWO SUM ON LL - https://www.geeksforgeeks.org/problems/find-pairs-with-given-sum-in-doubly-linked-list/1
+
+        vector<vector<int>> PairsTwoSum(int target){
+            vector<vector<int>> result;
+            if(!head) return result;
+            NODE* left = head;
+            NODE* right = tail;
+            while(left != right && left->prev != right){
+                int sum = left->data + right->data;
+                if(sum == target){
+                    result.push_back({left->data,right->data});
+                    left = left->next;
+                    right = right ->prev;
+                }
+                else if(sum < target){
+                    left = left->next;
+                }
+                else right = right->prev;
+            }
+            return result;
+        }
+
 };
 
 
@@ -220,10 +286,17 @@ int main(){
     mll.InsertAtPos(30,1);
     //mll.DeleteHead();
     mll.DeleteAtPos(4);
-    vector<int>arr = {2,2,2,2,2,2,3,4,2};
+    vector<int>arr = {1,2,4,5,6,8,9};
     mll.createListFromArray(arr);
-    mll.DeleteAllTarget(2);
-    mll.PrintForwardList();
+    //mll.RemoveDuplicateSorted();
+    //mll.ReverseLinkedList();
+    //mll.DeleteAllTarget(2);
+    //cout <<mll.CheckPalindrome() << endl;
+    vector<vector<int>> pairs = mll.PairsTwoSum(7);
+    for (auto& p : pairs) {
+    cout << "(" << p[0] << ", " << p[1] << ")" << endl;
+}
+    //mll.PrintForwardList();
     //cout << endl;
     //mll.PrintBackwardList();
     //mll.clearList();
