@@ -117,7 +117,21 @@ class Solution{
         moveDisks(A.size(), A, B, C);
      }
 
-   
+     //Pascal's Triangle - https://leetcode.com/problems/pascals-triangle/description/
+      vector<vector<int>> generate(int numRows) {
+        if(numRows < 0 ) return {{}};
+        if(numRows == 1) return {{1}};
+        vector<vector<int>> result = generate(numRows - 1);
+        vector<int> prevRow = result.back();
+        vector<int> newRow;
+        newRow.push_back(1);
+        for(int i = 1; i < prevRow.size(); i++){
+            newRow.push_back(prevRow[i - 1] + prevRow[i]);
+        }
+        newRow.push_back(1);
+        result.push_back(newRow);
+        return result;
+      }  
 };
 
   //Test for Tower of Hanoi
